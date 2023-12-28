@@ -1,11 +1,12 @@
 'use client';
 
-import React, {FC, useState} from 'react'
-import {Heart, PlayCircle} from "lucide-react";
+import React, {FC, useEffect, useState} from 'react'
+import {Heart, Home, PlayCircle} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import PlayVideoModal from "@/app/components/PlayVideoModal";
 import {addToWatchList, deleteFromWatchList} from "@/app/action";
 import {usePathname} from "next/navigation";
+import { useFormStatus } from 'react-dom';
 
 interface iAppProps {
     title: string
@@ -53,7 +54,7 @@ const MovieCard: FC<iAppProps> = ({
                     </form> :
                     <form action={addToWatchList}>
                         <input type="hidden" name='movieId' value={movieId} />
-                        <input type="hidden" name='pathname' value={pathname} />
+                        <input type="hidden" name='pathname' value={pathname}  />
                         <Button variant='outline' size='icon'>
                             <Heart className='w-4 h-4' />
                         </Button>

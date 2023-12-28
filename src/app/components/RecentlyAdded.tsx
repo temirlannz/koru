@@ -25,7 +25,7 @@ const getData = async (userId: string) => {
         orderBy: {
             createdAt: 'desc'
         },
-        // take: 4,
+        take: 4,
     });
 
     return data;
