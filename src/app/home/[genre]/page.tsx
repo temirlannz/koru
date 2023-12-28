@@ -98,6 +98,7 @@ const CategoryPage = async ({ params }: {params: { genre: string }}) => {
                     {data.map(movie => (
                         <div key={movie.id} className='relative h-60'>
                             <Image
+                                priority
                                 src={movie.imageString}
                                 alt={movie.title}
                                 width={500}
@@ -108,6 +109,7 @@ const CategoryPage = async ({ params }: {params: { genre: string }}) => {
                             <div className='h-60 relative z-10 w-full transform transition duration-500 hover:scale-125 opacity-0 hover:opacity-100'>
                                 <div className='bg-gradient-to-b from-transparent via-black/50 to-black z-10 w-full h-full flex items-center justify-center'>
                                     <Image
+                                        priority
                                         src={movie.imageString}
                                         alt={movie.title}
                                         width={800}
