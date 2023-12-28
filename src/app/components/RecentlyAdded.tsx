@@ -2,14 +2,20 @@ import React from 'react'
 import prisma from "@/app/utils/client";
 import Image from "next/image";
 import MovieCard from "@/app/components/MovieCard";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/app/utils/auth";
 
-const getData = async () => {
+const getData = async (userId: string) => {
     const data = await prisma.movie.findMany({
         select: {
             id: true,
             overview: true,
             title: true,
-            WatchLists: true,
+            WatchLists: {
+                where: {
+                    userId: userId
+                }
+            },
             imageString: true,
             youtubeString: true,
             age: true,
@@ -19,14 +25,15 @@ const getData = async () => {
         orderBy: {
             createdAt: 'desc'
         },
-        take: 4,
+        // take: 4,
     });
 
     return data;
 }
 
 const RecentlyAdded = async () => {
-    const data = await getData();
+    const session = await getServerSession(authOptions);
+    const data = await getData(session?.user?.email as string);
 
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-8 gap-5'>

@@ -1,6 +1,11 @@
-import React, {FC} from 'react'
+'use client';
+
+import React, {FC, useState} from 'react'
 import {Heart, PlayCircle} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import PlayVideoModal from "@/app/components/PlayVideoModal";
+import {addToWatchList, deleteFromWatchList} from "@/app/action";
+import {usePathname} from "next/navigation";
 
 interface iAppProps {
     title: string
@@ -25,20 +30,30 @@ const MovieCard: FC<iAppProps> = ({
     age,
     time
 }) => {
+    const [open, setOpen] = useState<boolean>(false);
+    const pathname = usePathname();
+
     return (
         <>
-            <button className='-mt-14'>
-                <PlayCircle strokeWidth={0.75} className='w-20 h-20' />
+            <button onClick={() => setOpen(true)} className='-mt-14'>
+                <PlayCircle
+                    strokeWidth={0.75}
+                    className='w-20 h-20'
+                />
             </button>
 
             <div className='right-5 top-5 absolute z-10'>
                 { watchList ?
-                    <form action="">
-                        <button>
+                    <form action={deleteFromWatchList}>
+                        <input type="hidden" name='watchListId' value={watchListId} />
+                        <input type="hidden" name='pathname' value={pathname} />
+                        <Button variant='outline' size='icon'>
                             <Heart className='w-4 h-4 text-red-500' />
-                        </button>
+                        </Button>
                     </form> :
-                    <form action="">
+                    <form action={addToWatchList}>
+                        <input type="hidden" name='movieId' value={movieId} />
+                        <input type="hidden" name='pathname' value={pathname} />
                         <Button variant='outline' size='icon'>
                             <Heart className='w-4 h-4' />
                         </Button>
@@ -69,6 +84,17 @@ const MovieCard: FC<iAppProps> = ({
                     { overview }
                 </p>
             </div>
+
+            <PlayVideoModal
+                title={title}
+                overview={overview}
+                youtubeUrl={youtubeUrl}
+                state={open}
+                changeState={setOpen}
+                release={year}
+                age={age}
+                duration={time}
+            />
         </>
     )
 }
